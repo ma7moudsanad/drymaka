@@ -64,74 +64,164 @@
         .main-service-card h3 { font-size: 1.6rem; color: var(--secondary-color); margin-bottom: 18px; font-weight: 600; }
         .main-service-card p { color: var(--gray); font-size: 1.05rem; line-height: 1.75; }
         
-        /* Gallery Styles */
-        .gallery { padding: 110px 0; background: var(--light-bg); overflow: hidden; }
-        .gallery-container { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 60px; }
-        .gallery-slider { overflow: hidden; position: relative; }
-        .gallery-track { display: flex; transition: transform 0.5s ease-in-out; }
-        .gallery-item { 
-            min-width: 280px; 
-            margin: 0 12px; 
-            border-radius: 15px; 
-            overflow: hidden; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        /* Gallery Styles - Modern Grid */
+        .gallery { padding: 110px 0; background: var(--light-bg); }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 25px;
+        }
+        .gallery-item {
             position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 4/3;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .gallery-item img { 
-            width: 100%; 
-            height: 200px; 
-            object-fit: cover; 
-            display: block;
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.2);
         }
-        
-        /* Navigation Buttons */
-        .gallery-btn { 
-            position: absolute; 
-            top: 50%; 
-            transform: translateY(-50%); 
-            width: 45px; 
-            height: 45px; 
-            background: var(--white); 
-            border: none; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        .gallery-item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
             justify-content: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            transition: all 0.3s;
-            font-size: 18px;
-            color: var(--secondary-color);
-            z-index: 10;
+            padding-bottom: 20px;
         }
-        .gallery-btn:hover { 
-            background: var(--primary-color); 
-            color: white; 
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
         }
-        .gallery-btn.prev { left: 5px; }
-        .gallery-btn.next { right: 5px; }
+        .gallery-item-overlay i {
+            color: white;
+            font-size: 28px;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover .gallery-item-overlay i {
+            transform: translateY(0);
+        }
         
-        /* Pagination Dots */
-        .gallery-dots { 
-            display: flex; 
-            justify-content: center; 
-            gap: 10px; 
-            margin-top: 30px; 
+        /* Lightbox Styles */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        .gallery-dot { 
-            width: 10px; 
-            height: 10px; 
-            border-radius: 50%; 
-            background: #cbd5e0; 
-            cursor: pointer; 
-            transition: all 0.3s;
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 85vh;
+        }
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 8px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.1);
             border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .gallery-dot.active { 
-            background: var(--primary-color); 
-            transform: scale(1.3); 
+        .lightbox-close:hover {
+            background: var(--primary-color);
+            transform: rotate(90deg);
         }
-        .gallery-dot:hover { background: var(--primary-color); }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 55px;
+            height: 55px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-nav:hover {
+            background: var(--primary-color);
+        }
+        .lightbox-prev { left: -80px; }
+        .lightbox-next { right: -80px; }
+        
+        /* Responsive Gallery */
+        @media (max-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            .gallery { padding: 70px 0; }
+            .gallery-item { border-radius: 12px; }
+            .lightbox-nav { width: 45px; height: 45px; font-size: 18px; }
+            .lightbox-prev { left: 10px; }
+            .lightbox-next { right: 10px; }
+        }
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-item {
+                aspect-ratio: 16/10;
+            }
+        }
         
         .about { padding: 110px 0; background: var(--white); }
         .about-container { display: flex; flex-wrap: wrap; align-items: center; gap: 60px; }
@@ -258,24 +348,51 @@
                 <p class="section-subtitle">شاهد أحدث أعمالنا</p>
             </div>
         </div>
-        <div class="gallery-container">
-            <div class="gallery-slider">
-                <div class="gallery-track" id="galleryTrack">
-                    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&q=80" alt="مغسلة"></div>
-                    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=600&q=80" alt="غسيل"></div>
-                    <div class="gallery-item"><img src="908.jpg" alt="مفروشات"></div>
-                    <div class="gallery-item"><img src="395188.jpeg" alt="تلوين"></div>
-                    <div class="gallery-item"><img src="1736750467852.webp" alt="غسيل ملابس"></div>
-                    <div class="gallery-item"><img src="images.jfif" alt="معدات"></div>
-                    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&q=80" alt="ملابس"></div>
-                    <div class="gallery-item"><img src="876.jpg" alt="تنظيف"></div>
-                </div>
+        <div class="gallery-grid">
+            <div class="gallery-item" data-index="0">
+                <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&q=80" alt="مغسلة">
+                <div class="gallery-item-overlay"><i class="fas fa-expand-alt"></i></div>
             </div>
-            <button class="gallery-btn prev" id="prevBtn"><i class="fas fa-chevron-right"></i></button>
-            <button class="gallery-btn next" id="nextBtn"><i class="fas fa-chevron-left"></i></button>
-            <div class="gallery-dots" id="galleryDots"></div>
+            <div class="gallery-item" data-index="1">
+                <img src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=600&q=80" alt="غسيل">
+                <div class="gallery-item-overlay"><i class="fas fa-expand-alt"></i></div>
+            </div>
+            <div class="gallery-item" data-index="2">
+                <img src="908.jpg" alt="مفروشات">
+                <div class="gallery-item-overlay"><i class="fas fa-expand-alt"></i></div>
+            </div>
+            <div class="gallery-item" data-index="3">
+                <img src="395188.jpeg" alt="تلوين">
+                <div class="gallery-item-overlay"><i class="fas fa-expand-alt"></i></div>
+            </div>
+            <div class="gallery-item" data-index="4">
+                <img src="1736750467852.webp" alt="غسيل ملابس">
+                <div class="gallery-item-overlay"><i class="fas fa-expand-alt"></i></div>
+            </div>
+            <div class="gallery-item" data-index="5">
+                <img src="images.jfif" alt="معدات">
+                <div class="gallery-item-overlay"><i class="fas fa-expand-alt"></i></div>
+            </div>
+            <div class="gallery-item" data-index="6">
+                <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&q=80" alt="ملابس">
+                <div class="gallery-item-overlay"><i class="fas fa-expand-alt"></i></div>
+            </div>
+            <div class="gallery-item" data-index="7">
+                <img src="876.jpg" alt="تنظيف">
+                <div class="gallery-item-overlay"><i class="fas fa-expand-alt"></i></div>
+            </div>
         </div>
     </section>
+    
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightboxClose"><i class="fas fa-times"></i></button>
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></button>
+            <img src="" alt="" id="lightboxImage">
+            <button class="lightbox-nav lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
     <section class="about" id="about">
         <div class="container">
             <div class="about-container">
@@ -393,30 +510,31 @@
         
         // Gallery Slider
         const galleryTrack = document.getElementById('galleryTrack');
+        const gallerySlider = document.querySelector('.gallery-slider');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const galleryDots = document.getElementById('galleryDots');
         
-        // Get all gallery items
         const galleryItems = document.querySelectorAll('.gallery-item');
         const totalItems = galleryItems.length;
         let currentIndex = 0;
         
-        // Calculate item width
-        function getItemWidth() {
-            const item = galleryItems[0];
-            const style = window.getComputedStyle(item);
-            const marginLeft = parseFloat(style.marginLeft) || 0;
-            const marginRight = parseFloat(style.marginRight) || 0;
-            return item.offsetWidth + marginLeft + marginRight;
-        }
-        
-        // Create dots
-        for (let i = 0; i < totalItems; i++) {
-            const dot = document.createElement('button');
-            dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
-            dot.addEventListener('click', () => goToSlide(i));
-            galleryDots.appendChild(dot);
+        // Initialize gallery
+        function initGallery() {
+            const itemWidth = 280 + 24; // min-width + margins
+            const trackWidth = itemWidth * totalItems;
+            galleryTrack.style.width = trackWidth + 'px';
+            
+            // Start from beginning - no offset
+            galleryTrack.style.transform = `translateX(0px)`;
+            
+            // Create dots
+            for (let i = 0; i < totalItems; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', () => goToSlide(i));
+                galleryDots.appendChild(dot);
+            }
         }
         
         function updateDots() {
@@ -428,15 +546,9 @@
         
         function goToSlide(index) {
             currentIndex = index;
-            const itemWidth = getItemWidth();
-            // Show partially next item for better UX
-            const visibleWidth = galleryTrack.parentElement.offsetWidth;
-            let translateX = -(currentIndex * itemWidth) + (visibleWidth / 2) - (itemWidth / 2);
-            
-            // Clamp values
-            const maxTranslate = 0;
-            const minTranslate = -((totalItems - 1) * itemWidth);
-            translateX = Math.max(maxTranslate, Math.min(minTranslate, translateX));
+            const itemWidth = 280 + 24;
+            // Simple slide - no offset
+            const translateX = -(currentIndex * itemWidth);
             
             galleryTrack.style.transform = `translateX(${translateX}px)`;
             updateDots();
@@ -452,7 +564,6 @@
             goToSlide(currentIndex);
         }
         
-        // Event listeners
         nextBtn.addEventListener('click', nextSlide);
         prevBtn.addEventListener('click', prevSlide);
         
@@ -460,11 +571,11 @@
         let touchStartX = 0;
         let touchEndX = 0;
         
-        galleryTrack.parentElement.addEventListener('touchstart', (e) => {
+        gallerySlider.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
         }, { passive: true });
         
-        galleryTrack.parentElement.addEventListener('touchend', (e) => {
+        gallerySlider.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
             const diff = touchStartX - touchEndX;
             
@@ -477,16 +588,22 @@
             }
         }, { passive: true });
         
-        // Initialize
-        goToSlide(0);
-        
-        // Auto slide
-        let autoSlideInterval = setInterval(nextSlide, 3000);
-        
-        // Pause on hover
-        const galleryContainer = document.querySelector('.gallery-slider');
-        galleryContainer.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
-        galleryContainer.addEventListener('mouseleave', () => autoSlideInterval = setInterval(nextSlide, 3000));
+        // Initialize after page loads
+        window.addEventListener('load', function() {
+            initGallery();
+            
+            // Handle resize
+            window.addEventListener('resize', () => {
+                goToSlide(currentIndex);
+            });
+            
+            // Auto slide
+            let autoSlideInterval = setInterval(nextSlide, 3000);
+            
+            // Pause on hover
+            gallerySlider.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+            gallerySlider.addEventListener('mouseleave', () => autoSlideInterval = setInterval(nextSlide, 3000));
+        });
     </script>
 </body>
 </html>
